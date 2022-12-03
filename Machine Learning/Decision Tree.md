@@ -1,5 +1,6 @@
-Decision tree can be used for classification and regression. 
+#machine-learning 
 
+Decision tree can be used for classification and regression. 
 
 # Decision Tree Learning Algorithm
 ![[Pasted image 20221201233601.png]]

@@ -1,3 +1,5 @@
+#reinforcement-learning 
+
 This equation is related to the [[State-value function]] computation.
 
 We start from the definiton

@@ -1,3 +1,5 @@
+#reinforcement-learning
+
 >[!NOTE] Definition
 >$$q_{\pi}(s,a) = \mathbb{E}_{\pi}[G_t | S_t = s, A_t=a]$$
 
@@ -21,3 +23,4 @@ $$v_\pi(s) = \sum_a q_\pi(s,a) \pi(a|s) = \mathbb{E}_\pi[q_\pi(s,a)| S_t = s]$$
 ## Bellman Expectation Equation
 
 Action-value function too has a bellman version, see the derivation [[Bellman Expectation Equation#Action-value function|here]].
+

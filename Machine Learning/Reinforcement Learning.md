@@ -1,3 +1,5 @@
+#machine-learning #reinforcement-learning 
+
 >[!Tip] What kinds of problems does it solve?
 >Reinforcement learning can solve sequential decision problems, which can be modeled as a [[Markov Decision Process| MDP]], where the solution to this problem would be an optimal policy $\pi^*$.
 
@@ -48,5 +50,3 @@ Then we claim this policy is the *optimal policy*, $\pi^*$.
 >3. They all can achieve the optimal aciton-value function.
 - How to prove the 3rd point?
 
-
-Mobile test

@@ -1,3 +1,4 @@
+#reinforcement-learning 
 
 >[!NOTE] Definition
 >$$v_{\pi}(s) = \mathbb{E}_{\pi}[G_t | S_t = s]$$

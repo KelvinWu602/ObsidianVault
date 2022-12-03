@@ -1,3 +1,5 @@
+#reinforcement-learning 
+
 # 5 components:
 1. States: a full description of your environment
 2. Actions: all the possible actions that the player can take given the current state
