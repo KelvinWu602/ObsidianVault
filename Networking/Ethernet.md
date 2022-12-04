@@ -22,7 +22,7 @@ It will flood whatever signals to all its ports, *except the incoming port*.
 - first 24 bits are *vendor code*
 - last 24 bits are *device code*t
 
-## Decision made by MAC
+## Decision made by NIC
 ```mermaid
 flowchart TB
 	dec1["dest addr = my MAC/broadcast?"]-->|Yes|DeEncapsulate
