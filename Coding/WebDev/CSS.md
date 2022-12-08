@@ -7,7 +7,7 @@ Linking to External Style Sheets
 <link href="style.css" rel="stylesheet">
 ```
 
-You can use style sheet to avoid repetition. See [[CSS Selectors]] on how to select elements.
+You can use style sheet to avoid repetition. See CSS Selectors on how to select elements.
  
 # CSS Properties
 

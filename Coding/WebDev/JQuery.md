@@ -1,14 +1,13 @@
 #webdev 
 
-# Import
+Import the library in html
 `<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>`
 
-
 # DOM Maniputlation
-Compare with: [[Document Object Model#DOM Manipulation]]
+Compare with: Document Object Model#DOM Manipulation
 
 ## Get Element
-[[Document Object Model#Get Element]]
+Document Object Model#Get Element
 ### By ID
 `let node = $("#element_id")`
 ### By Tag
@@ -17,16 +16,16 @@ Compare with: [[Document Object Model#DOM Manipulation]]
 `let node = $(".class")`
 
 >[!Note] CSS Selector
->`#element_id` and `h1` are called *[[CSS Selectors]]*, which can be used to select elements.
+>`#element_id` and `h1` are called *CSS Selectors*, which can be used to select elements.
 
 >[!Tip] jQuery Object
 >The return value of above statements are not DOM elements, but jQuery Objects.
 
 ## jQuery Objects Properties
-Compare with: [[Document Object Model#Changing Properties]]
+Compare with: Document Object Model#Changing Properties
 
 ### html
-[[Document Object Model#innerHTML]]
+Document Object Model#innerHTML
 
 | Action | code                |
 | ------ | ------------------- |
@@ -74,7 +73,7 @@ nodes.attr("href","new link here")
 
 
 ## css
-Compare with: [[Document Object Model#style]]
+Compare with: Document Object Model#style
 
 | Action | code                        |
 | ------ | --------------------------- |
@@ -102,7 +101,7 @@ DOM--> jQuery
 # jQuery Event
 
 ## Ready Event
-[[Document Object Model#onload event]]
+Document Object Model#onload event
 Called when the object finishes loading
 ```js
 $(document).ready(...);
@@ -137,7 +136,7 @@ $("p").toggle(500); //500ms
 
 
 ## Other Events
-[[Document Object Model#onclick event]]
+Document Object Model#onclick event
 The advantage is you will apply the event callbacks to all elements at once.
 ```js
 $("a").on("click", ...);

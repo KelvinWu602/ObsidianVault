@@ -1,30 +1,10 @@
 # Basic
-Selection could be based on:
-- HTML Tag
-- Class
-- ID
 
-## Tag 
-
-Select all h1
 ```css
-h1 {...}
+h1     {...} //html tag
+.class {...} //class
+#btn1  {...} //ID
 ```
-
-## Class
-
-Select all apple class members
-```css
-.apple {...}
-```
-
-## ID
-
-Select btn1
-```css
-#btn1 {...}
-```
-
 
 # Advanced
 

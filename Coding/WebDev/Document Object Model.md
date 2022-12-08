@@ -41,7 +41,7 @@ flowchart TB
 ```
 
 # DOM Manipulation
-The [[JQuery]] counterpart.
+The JQuery counterpart.
 
 ## Get Element
 ### By ID

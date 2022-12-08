@@ -46,7 +46,7 @@ Other tranformation:
 
 
 # Animation Event
-[[JQuery]]
+JQuery#Other Events|JQuery Event
 
 ```js
 $(".number").on("animationend",()=>{

@@ -134,3 +134,22 @@ Promise.all(promises)
 	.catch((err)=>{console.log(err)})
 ```
 
+# Basic
+```js
+//string to number
+parseInt("123");
+//Not a number test
+isNan("abc")==true;
+//variable without declaration
+no_var_let_const = "is a global variable"
+//Array functions
+array.length
+array.splice(1,2,6); //delete 2 element starting at index 1, insert 6 at index 1
+array.splice(3,1); //delete 1 element starting at index 3
+for(const element of arr){...}
+for(const key in obj){...}
+item1, item2 = ...arr; //arr = [1,2]
+[...arr, 3,4] == [1,2,3,4]
+{a:1, ...bandc} == {a:1,b:2,c:3} //bandc = {b:2, c:3}
+					  
+```

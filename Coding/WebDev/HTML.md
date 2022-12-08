@@ -31,7 +31,6 @@ The simplest HTML:
 </ul>
 ```
 
-
 ## Styling Headers
 
 | headers | usage          | single |
