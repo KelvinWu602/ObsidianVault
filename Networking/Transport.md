@@ -77,6 +77,9 @@ sequenceDiagram
 Ports are used to identify which process does this message belongs to.
 TCP Software is responsible for feeding the message data to correct process.
 
+>[!Note] Demultiplex
+> Delivering data from the transport layer to the correct port process.
+
 ### Well-Known Ports
 - Numbers below 1024
 - Defined by Internet Assigned Number Authority

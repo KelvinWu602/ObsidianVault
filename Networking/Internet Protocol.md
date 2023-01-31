@@ -65,13 +65,13 @@ Depending on the initial byte, the division is different:
 
 | First Byte        | Decimal | Class | Size | Network | Host |
 | ----------------- | ------- | ----- | ---- | ------- | ---- |
-| 00000001-01111110 | 1-126   | A     | 126  | 1       | 3    |
+| 00000001-01111110 | 1-127   | A     | 126  | 1       | 3    |
 | 10000000-10111111 | 128-191 | B     | 64   | 2       | 2    |
 | 11000000-11011111 | 192-223 | C     | 32   | 3       | 1    | 
 | 11100000-11101111 | 224-239 | D     | 16   |         |      |
 | 11110000-11111111 | 240-255 | E     | 16   |         |      |
 
->[!Tips] Class A special cases
+>[!Tips] Class A special address
 >127.x.x.x is reserved as loopback testing address.
 >0.0.0.0 is reserved for DHCP.
 
@@ -173,6 +173,9 @@ sequenceDiagram
 
 - Send to port 67, Receive on port 68
 
+>[!Tips] DHCP ACK
+>Only the accepted DHCP server need to response.
+
 ### DHCP relay
 
 Noticing that the DHCP discover and request message are layer 2 broadcast messages, which will be blocked by a router. What if the DHCP server is not in the same network? We need something called DHCP relay.
@@ -215,7 +218,7 @@ Suppose there is a Google server, located at the same network as you. You want t
 
 ## DNS (Get IP)
 
-DNS server is a simple key-value pair server. The key is domain name, the value is the IP address.
+DNS server stores simple key-value pair. The key is domain name, the value is the IP address. They run over UDP on port 53.
 
 ### DNS hierarchy
 Just like computer multi-level cache, so as DNS servers.
@@ -239,45 +242,57 @@ flowchart LR
 			.au
 			.co
 	end
-	cisco.com
-	facebook.com
+	subgraph AuthuratativeDNS
+		direction TB
+			cisco.com
+			facebook.com
+	end
 ```
+### Local DNS Server
+The ISP owned DNS server which does not belong to the hierarchy, which is also the DNS server assigned to a host during DHCP. When client make a DNS request, the request is first sent to the ISP DNS, and then it will act as a proxy.
 
-A DNS request Round Trip:
-```mermaid
-flowchart LR
-	client --> DNS
-	DNS --> ISP_DNS 
-	ISP_DNS --> root
-	root --> .com
-	.com --> pornhub.com 
-```
-The order for recursive search looks like this, once the target is found, it recursively returns.
+### Mixing Recursive and Iterative 1
+![[Pasted image 20221209141915.png]]
+- TLD DNS Server does not necessarily know Authoritative DNS Server. For example, under `dns.umass.edu`, there is a set of department DNS Server (authoritative). One more iteration is needed.
+- `dns.nyu.edu` cache response for every query it made. 
+- Query 1 is recursive, others are iterative.
+- Caching information is discarded time to time (2 days).
+
+### Fully Recursive
+![[Pasted image 20221209142601.png]]
+- see [wiki](https://en.wikipedia.org/wiki/Domain_Name_System#Address_resolution_mechanism) for more details
 
 ## ARP (Get MAC)
+In the middle of the link and network layer.
 
 ### ARP Table
 A mapping between IP address and MAC address, recorded devices connected to the same LAN.
 
 1. IP
 2. MAC
-3. Interface
-4. Timestamp
+3. Timestamp
 
 Each entry should not last long (IP address is not fixed), and will be deleted in a few hours.
 
 ### Sending message to D-IP
 ```mermaid
 flowchart TB
-	q1["D-IP in my ARP table?"]-->|Yes|s1["Send. D-IP, D-MAC"]
-	q1-->|No|q2["D-IP same network as mine?"]
-	q2-->|Yes|simple["ARP Request to D-IP"]
-	q2-->|No|across["ARP Request to Default gateway"]
-	simple-->s1
-	across-->s2["Send. D-IP, gateway-MAC"]
+	d1["D-IP same network as mine?"] --> |Yes| d2["D-MAC in my ARP table?"]
+	d2 --> |Yes| local["Send. D-IP, D-MAC"]
+	d2 --> |No| localarp["ARP:D-IP. Get D-MAC"]
+	localarp --> local
+	d1 --> |No| d3["gate-MAC in my ARP table?"]
+	d3 --> |Yes| outside["Send. D-IP, gate-MAC"]
+	d3 --> |No| outsidearp["ARP:gate-IP. Get gate-MAC."]
+	outsidearp --> outside
 ```
 
-### ARP within LAN
+>[!Note] Using default gateway MAC when D-IP is not in the same subnet
+>It is because the layer 2 NIC will discard the frame when the destination MAC is neither itself nor broadcast address.
+>
+>When the router receives the frame, it will pass it up to layer 3. Then it will look at the routing table and determine the correct interface to send the re-encapsulated frame.
+
+### ARP process
 
 ```mermaid
 sequenceDiagram
@@ -287,18 +302,17 @@ sequenceDiagram
 	Note left of Host: Update ARP Table
 ```
 
-
 | Step    | Msg Type  | S-IP      | D-IP      | S-MAC      | D-MAC             | 
 | ------- | --------- | --------- | --------- | ---------- | ----------------- | 
 | Request | Broadcast | Host-IP   | Server-IP | Host-MAC   | ff:ff:ff:ff:ff:ff |         
 | Reply   | Unicast   | Server-IP | Host-IP   | Server-MAC | Host-MAC          |         
 
->[!Note] Everyone who received ARP request will update ARP Table?
->No! Only the targeted server will update the ARP Table!
-
 Notice that the ARP request is a layer 2 broadcast message, which will be discarded by router.
 
-### ARP across LAN
+>[!Note] Everyone who received ARP request will update ARP Table?
+>No! Only the targeted server will update the ARP Table! Layer 2 will de-encapsulate the frame and pass it up to the ARP module, which will look at the IP address and discard if unmatched.
+
+### Sending across subnet
 
 Network topology:
 ```mermaid
@@ -338,7 +352,7 @@ sequenceDiagram
 | ICMP        | Unicast   | Host-IP              | Server-IP            | Host-MAC   | R1-L-MAC          |
 | ICMP        | Unicast   | Host-IP              | Server-IP            | R1-R-MAC   | Server-MAC        |
 | ICMP        | Unicast   | Server-IP            | Host-IP              | Server-MAC | R1-R-MAC          |
-| ICMP        | Unicast   | Server-IP            | Host-IP              | R1-R-MAC   | Host-MAC                  |
+| ICMP        | Unicast   | Server-IP            | Host-IP              | R1-L-MAC   | Host-MAC                  |
 
 
 # Public vs Private Network

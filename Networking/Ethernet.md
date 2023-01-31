@@ -25,10 +25,12 @@ It will flood whatever signals to all its ports, *except the incoming port*.
 ## Decision made by NIC
 ```mermaid
 flowchart TB
-	dec1["dest addr = my MAC/broadcast?"]-->|Yes|DeEncapsulate
+	dec1["dest addr = my MAC/broadcast?"]-->|Yes|dec2["FCS match?"]
 	dec1-->|No|Discard
+	dec2 --> |Yes|De-encapsulate
+	dec2--> |No|Discard
 ```
-
+- Whether a switch checks FCS depends on its mode.
 
 # Switch
 

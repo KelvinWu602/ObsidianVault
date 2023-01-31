@@ -1,5 +1,6 @@
 {
   "accentColor": "",
-  "baseFontSize": 20,
-  "cssTheme": "Atom"
+  "baseFontSize": 22,
+  "cssTheme": "Atom",
+  "nativeMenus": false
 }
